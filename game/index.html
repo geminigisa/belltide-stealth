@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BELLTIDE — The Flooded Lighthouse</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<style>
+  html,body{margin:0;padding:0;background:#05070f;height:100%;overflow:hidden;
+    font-family:Georgia,'Times New Roman',serif;color:#e8dcc0;}
+  #wrap{position:relative;width:960px;height:640px;margin:0 auto;top:50%;transform:translateY(-50%);
+    box-shadow:0 0 60px #000, 0 0 0 1px #2a3350;}
+  canvas{display:block;width:960px;height:640px;background:#0b1020;}
+  #hud{position:absolute;left:0;right:0;top:0;height:44px;display:flex;align-items:center;
+    gap:14px;padding:0 12px;background:linear-gradient(#0b1020f2,#0b1020c8 70%,transparent);
+    font-size:14px;pointer-events:none;z-index:5;}
+  #hud .lvl{font-weight:bold;letter-spacing:1px;color:#ffb84d;}
+  #hud .obj{color:#7fe8c8;}
+  #hud .time{color:#c9d4ff;}
+  #hud .streak{color:#ffd76a;}
+  #eye{width:26px;height:26px;border-radius:50%;border:2px solid #8899bb;display:inline-flex;
+    align-items:center;justify-content:center;font-size:15px;background:#0b1020;}
+  #eye.hidden{border-color:#7fe8c8;color:#7fe8c8;box-shadow:0 0 10px #7fe8c855;}
+  #eye.exposed{border-color:#ff5a4d;color:#ff5a4d;box-shadow:0 0 12px #ff5a4d88;}
+  #eyeLabel{font-size:12px;letter-spacing:1px;}
+  #gadgets{margin-left:auto;display:flex;gap:8px;}
+  .slot{width:52px;height:34px;border:1px solid #55648f;border-radius:6px;background:#0b1020cc;
+    text-align:center;line-height:1.1;padding-top:3px;font-size:11px;color:#c9d4ff;}
+  .slot b{color:#ffb84d;font-size:13px;}
+  .slot.empty{opacity:.35;}
+  #noiseWrap{position:absolute;left:12px;bottom:10px;width:170px;z-index:5;pointer-events:none;}
+  #noiseWrap .lbl{font-size:11px;letter-spacing:2px;color:#9fb0d8;}
+  #noiseBar{height:8px;border:1px solid #55648f;border-radius:4px;background:#0b1020cc;overflow:hidden;}
+  #noiseFill{height:100%;width:0%;background:linear-gradient(90deg,#7fe8c8,#ffd76a,#ff5a4d);}
+  #bell{position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:5;display:none;
+    padding:4px 14px;border:1px solid #ffd76a;border-radius:20px;background:#1a1405ee;color:#ffd76a;
+    font-size:13px;letter-spacing:2px;pointer-events:none;}
+  #overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:6;}
+  .panel{background:#0b1020e8;border:1px solid #ffb84d66;border-radius:12px;padding:26px 34px;
+    max-width:620px;text-align:center;box-shadow:0 0 40px #000;}
+  .panel h1{margin:0 0 4px;font-size:40px;letter-spacing:6px;color:#ffb84d;
+    text-shadow:0 0 24px #ffb84d88;}
+  .panel h2{margin:0 0 12px;font-size:14px;letter-spacing:4px;color:#7fe8c8;font-weight:normal;}
+  .panel p{margin:8px 0;font-size:15px;line-height:1.5;color:#d8cdb2;}
+  .panel .keys{font-size:13px;color:#9fb0d8;line-height:1.8;}
+  .panel .keys b{color:#ffd76a;}
+  .panel .go{margin-top:14px;font-size:15px;letter-spacing:2px;color:#ffb84d;}
+  .rank{font-size:56px;letter-spacing:8px;margin:6px 0;}
+  .rank.ghost{color:#7fe8c8;text-shadow:0 0 30px #7fe8c8aa;}
+  .rank.shadow{color:#ffd76a;text-shadow:0 0 30px #ffd76a99;}
+  .rank.spotted{color:#ff5a4d;text-shadow:0 0 30px #ff5a4d99;}
+  #toast{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);z-index:5;
+    font-size:14px;color:#ffd76a;letter-spacing:1px;text-shadow:0 1px 4px #000;pointer-events:none;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game" width="960" height="640"></canvas>
+  <div id="hud">
+    <span class="lvl" id="hudLevel">I · THE DROWNED HALL</span>
+    <span class="obj" id="hudObj">⬢ Relic 0/1 &nbsp; ◆ Loot 0/2</span>
+    <span class="time" id="hudTime">00:00</span>
+    <span class="streak" id="hudStreak">👻 streak 0</span>
+    <span id="eye" class="hidden">◉</span><span id="eyeLabel">HIDDEN</span>
+    <div id="gadgets">
+      <div class="slot" id="slot1"><b>1</b> 🔔 Chime<br><span id="c1">3</span></div>
+      <div class="slot" id="slot2"><b>2</b> 💧 Snuff<br><span id="c2">2</span></div>
+      <div class="slot" id="slot3"><b>3</b> 💨 Smoke<br><span id="c3">2</span></div>
+    </div>
+  </div>
+  <div id="bell">🔔 BELL TOLL — FOOTSTEPS MASKED 🔔</div>
+  <div id="noiseWrap"><div class="lbl">NOISE</div><div id="noiseBar"><div id="noiseFill"></div></div></div>
+  <div id="toast"></div>
+  <div id="overlay"></div>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
